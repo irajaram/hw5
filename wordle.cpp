@@ -14,7 +14,7 @@ using namespace std;
 
 // Add prototypes of helper functions here
 
-void wordleHelper(const std::string& fixedChar, const std::string& floatChar, const std::set<std::string>& dict, std:: set<std::string>& res, std::string& currWord, int& j);
+void wordleHelper(const std::string& fixedChar, const std::string& floatChar, const std::set<std::string>& dict, std:: set<std::string>& res, std::string& currWord, int j);
 // Definition of primary wordle function
 std::set<std::string> wordle(
     const std::string& in,
@@ -36,7 +36,7 @@ std::set<std::string> wordle(
 }
 
 // Define any helper functions here
-void wordleHelper(const std::string& fixedChar, const std::string& floatChar, const std::set<std::string>& dict, std:: set<std::string>& res, std::string& currWord, int& j){
+void wordleHelper(const std::string& fixedChar, const std::string& floatChar, const std::set<std::string>& dict, std:: set<std::string>& res, std::string& currWord, int j){
     if(j == currWord.size()){
         if(dict.find(currWord)!= dict.end()){
         res.insert(currWord);
