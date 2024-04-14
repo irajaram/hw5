@@ -23,7 +23,7 @@ std::set<std::string> wordle(
 {
     // Add your code here
     set<string> res;
-    string currWord(in.size(),'-'); //initialize string to store generated words and initialized to size of input using reference from cplusplus.com
+    string currWord(in); //initialize string to store generated words and initialized to size of input using reference from cplusplus.com
     for(int i = 0; i< currWord.size(); i++){
         wordleHelper(in, floating, dict, res, currWord, i);
     }
