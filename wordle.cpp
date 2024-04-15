@@ -51,7 +51,8 @@ void wordleHelper(const std::string& fixedChar, const std::string& floatChar, co
         for(int i=0; i<floatChar.size(); i++){
             currWord[j] = floatChar[i];
             wordleHelper(fixedChar, floatChar, dict,res, currWord, j+1);
-        }
+        }  
     }
-    currWord[j] = '-';
+    currWord[j] = '-'; //reset
+    
 }
