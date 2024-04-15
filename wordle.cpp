@@ -37,6 +37,7 @@ std::set<std::string> wordle(
 
 // Define any helper functions here
 void wordleHelper(const std::string& fixedChar, const std::string& floatChar, const std::set<std::string>& dict, std:: set<std::string>& res, std::string& currWord, int j){
+    int count =0;
     if(j == currWord.size()){
         if(dict.find(currWord)!= dict.end()){
         res.insert(currWord);
@@ -45,14 +46,25 @@ void wordleHelper(const std::string& fixedChar, const std::string& floatChar, co
     }
 
     else{
-        for (char c : floatChar) {
-            currWord[j] = c;
-            wordleHelper(fixedChar, floatChar, dict, res, currWord, j + 1);
+        for(int i= 0;  i < currWord.size()){
+            if(currWord[i]== '-'){
+                ++ count;
+            }
         }
-        currWord[j] = '-';
+
+        if(count == floatChar.size()){
+            for (char c : floatChar) {
+                currWord[j] = c;
+                wordleHelper(fixedChar, floatChar, dict, res, currWord, j + 1);
+            }
+        }
+
+        else {
+            for (char c = 'a'; c <= 'z'; ++c) {
+                currWord[j] = c; // Try setting the current character as 'c'
+                wordleHelper(fixedChar, floatChar, dict, res, currWord, j + 1); // Recur to the next position
+            }
+        }
     }
-
-    
-
 
 }
