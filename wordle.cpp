@@ -43,16 +43,16 @@ void wordleHelper(const std::string& fixedChar, const std::string& floatChar, co
         }
         return;
     }
-    else if(currWord[j]!='-'){
-        currWord[j] = fixedChar[j];
-        wordleHelper(fixedChar,floatChar,dict,res,currWord, j+1);
+
+    else{
+        for (char c : floatChar) {
+            currWord[j] = c;
+            wordleHelper(fixedChar, floatChar, dict, res, currWord, j + 1);
+        }
+        currWord[j] = '-';
     }
-    else{ 
-        for(int i=0; i<floatChar.size(); i++){
-            currWord[j] = floatChar[i];
-            wordleHelper(fixedChar, floatChar, dict,res, currWord, j+1);
-        }  
-    }
-    currWord[j] = '-'; //reset
+
     
+
+
 }
