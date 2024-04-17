@@ -12,59 +12,81 @@
 using namespace std;
 
 
-// Add prototypes of helper functions here
+void wordleHelper(
+                const std::string& fixedChar, 
+                std::string floatChar, 
+                const std::set<std::string>& dict, 
+                std::set<std::string>& res, 
+                std::string& currWord, 
+                int j,
+                int dashCount);
 
-void wordleHelper(const std::string& fixedChar, const std::string& floatChar, const std::set<std::string>& dict, std:: set<std::string>& res, std::string& currWord, int j);
 // Definition of primary wordle function
-std::set<std::string> wordle(
-    const std::string& in,
-    const std::string& floating,
-    const std::set<std::string>& dict)
-{
+std::set<std::string> wordle(const std::string& in, const std::string& floating, const std::set<std::string>& dict) {
     // Add your code here
     set<string> res;
     string currWord(in); //initialize string to store generated words and initialized to size of input using reference from cplusplus.com
-    for(int i = 0; i< currWord.size(); i++){
-        wordleHelper(in, floating, dict, res, currWord, i);
+    int j =0;
+    string floatChar = floating;
+    // Call the recursive helper function for each position
+    /*for(char c: floating){
+      cout << c << " " << endl;
+    }*/
+    int dashCount =0;
+    for(int i=0; i<currWord.size(); i++){
+      if(currWord[i]=='-'){
+        ++dashCount;
+      }
     }
+    wordleHelper(in, floatChar, dict, res, currWord, j, dashCount);
 
     return res;
-
-
-
-
 }
 
 // Define any helper functions here
-void wordleHelper(const std::string& fixedChar, const std::string& floatChar, const std::set<std::string>& dict, std:: set<std::string>& res, std::string& currWord, int j){
-    int count =0;
-    if(j == currWord.size()){
-        if(dict.find(currWord)!= dict.end()){
-        res.insert(currWord);
+void wordleHelper(const std::string& fixedChar, std::string floatChar, const std::set<std::string>& dict, std::set<std::string>& res, std::string& currWord, int j, int dashCount) {
+    //cout << "Processing word: " << currWord << endl;
+    if (j == fixedChar.size()) {
+        if (dict.find(currWord) != dict.end() && floatChar.size() == 0) {
+            //cout << "Found word in dictionary: " << currWord << endl;
+            res.insert(currWord);
+        } 
+        else {
+          //cout << "Word not found in dictionary: " << currWord << endl;
         }
         return;
     }
+    
+    if (currWord[j] != '-') {
+      //cout << "reaching first" << endl;
+      wordleHelper(fixedChar, floatChar, dict, res, currWord, j + 1, dashCount);
+    } 
 
-    else{
-        for(int i= 0;  i < currWord.size()){
-            if(currWord[i]== '-'){
-                ++ count;
-            }
+    else {
+      if (dashCount <= floatChar.size()) {
+        string temp = floatChar;
+        for (int i=0; i<floatChar.size(); i++) {
+          char letter = floatChar[i];
+          currWord[j] = letter;
+          floatChar.erase(floatChar.find(letter),1);
+          wordleHelper(fixedChar, floatChar, dict, res, currWord, j+1, dashCount-1);
+          floatChar = temp;
         }
+      }
 
-        if(count == floatChar.size()){
-            for (char c : floatChar) {
-                currWord[j] = c;
-                wordleHelper(fixedChar, floatChar, dict, res, currWord, j + 1);
-            }
+      else {
+        //issue not entering here
+        //cout << "reached this point" << endl;
+        for (char c = 'a'; c <= 'z'; ++c) {
+          string temp = floatChar;
+          if(floatChar.find(c)!=string::npos){
+            floatChar.erase(floatChar.find(c),1);
+          }
+          currWord[j] = c;
+          wordleHelper(fixedChar, floatChar, dict, res, currWord, j+1, dashCount -1);
+          floatChar = temp;
         }
-
-        else {
-            for (char c = 'a'; c <= 'z'; ++c) {
-                currWord[j] = c; // Try setting the current character as 'c'
-                wordleHelper(fixedChar, floatChar, dict, res, currWord, j + 1); // Recur to the next position
-            }
-        }
+      }
+      currWord[j] = '-';
     }
-
 }
